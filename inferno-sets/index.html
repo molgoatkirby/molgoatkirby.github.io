@@ -13,19 +13,20 @@
 	<body>
 		<h1>Inferno Sets Tool!</h1>
 		<label for="minutes">Minutes left:</label>
-		<input type="number" id="minutes" name="minutes">
+		<input type="number" id="minutes" name="minutes" value="0">
 		<label for="seconds">Seconds left:</label>
-		<input type="number" id="seconds" name="seconds">
-		<button onclick="drawUpdate()">update</button>
+		<input type="number" id="seconds" name="seconds" value="0">
+		<button onclick="update()">update</button>
 		<br><br>
 		<canvas id="map" onselectstart="return false" oncontextmenu="return false" width="580" height="200"></canvas>
 		<script>
 			var can = document.getElementById("map");
 			var selected = [,];
+			var attack = [,];
 			var size = 20;
 			var ctx = can.getContext("2d");
 			var fillerTop = 100;
-
+			drawUpdate();
 			document.getElementById("map").addEventListener('mousedown',function(e){
 				var x = e.offsetX;
 				var y = e.offsetY;
@@ -38,17 +39,55 @@
 					y = Math.floor(y/size);
 					selected[0] = x;
 					selected[1] = y;
-					document.getElementById("minutes").value = x;
-					document.getElementById("seconds").value = y;
-					if (checkBounds(selected[0],selected[1])) {
-						drawUpdate();
-					}
+					//document.getElementById("minutes").value = x;
+					//document.getElementById("seconds").value = y;
+					update();
 				}
 			});
+
+			function update() {
+				if (checkBounds(selected[0],selected[1])) {
+					calcSpot();
+					drawUpdate();
+					drawAttack();
+				}
+			}
+
 			function checkBounds(x,y) {
 				if (x > 0 && x < 28 && (y == 0 || y == 4)) {return true;}
 				if (y > 0 && y < 4 && (x == 1 || x == 27)) {return true;}
 				return false;
+			}
+
+			function convertToCoord(x) {
+				while (x < 1) x += 60;
+				x = x%60;
+				if (x < 28) return [x,0];
+				if (x < 31) return [27,x-27];
+				if (x < 58) return [60-x-2,4];
+				if (x < 61) return [0,61-x];
+				return [28,4].slice(0);
+			}
+
+			function convertToNum(x,y) {
+				if (y == 0) return x;
+				if (y == 4) return 60-x-2;
+				if (x == 27) return 27+y;
+				if (x == 1) return 61-y;
+				return 61;
+			}
+
+			function calcSpot() {
+				var m = document.getElementById("minutes").value;
+				var s = document.getElementById("seconds").value;
+				var time = m*60 + s;
+				time = time%36;
+				time = Math.floor(time / 0.6) + 4;
+				time = time % 60;
+				var pos = convertToNum(selected[0],selected[1]);
+				var newPos = pos - time;
+				if (newPos < 1) newPos += 60;
+				attack = convertToCoord(newPos);
 			}
 
 			function drawUpdate() {
@@ -68,6 +107,22 @@
 					}
 				}
 
+			}
+
+			function drawAttack() {
+				ctx.fillStyle = "green";
+				var nextSets = [0,0];
+				var nextPos = convertToNum(selected[0],selected[1]);
+
+				for (var i = 1; i < 6; i++) {
+					ctx.globalAlpha = 1 - 0.1*i;
+					nextPos -= 10;
+					nextSets = convertToCoord(nextPos).slice(0);
+					ctx.fillRect(nextSets[0]*20+1,nextSets[1]*20+fillerTop+1,size-2,size-2);
+				}
+				ctx.globalAlpha = 1;
+				ctx.fillStyle = "white";
+				ctx.fillRect(attack[0]*20+5,attack[1]*20+fillerTop+5,10,10);
 			}
 		</script>
 	</body>
