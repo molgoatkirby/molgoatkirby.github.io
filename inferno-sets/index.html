@@ -19,6 +19,11 @@
 		<button onclick="update()">update</button>
 		<br><br>
 		<canvas id="map" onselectstart="return false" oncontextmenu="return false" width="580" height="200"></canvas>
+		<div style="display:none;">
+			<img id="arrowright" src="arrowright.png" width = "640" height = "186">
+			<img id="arrowleft" src="arrowleft.png" width = "640" height = "186">
+			<img id="zuk" src="zuk.png" width = "1280" height = "1389">
+		</div>
 		<script>
 			var can = document.getElementById("map");
 			var selected = [,];
@@ -26,6 +31,14 @@
 			var size = 20;
 			var ctx = can.getContext("2d");
 			var fillerTop = 100;
+			var arrowright = document.getElementById("arrowright");
+			var arrowleft = document.getElementById("arrowleft");
+			var zuk = document.getElementById("zuk");
+			window.onload = function() {
+				ctx.drawImage(arrowright,size*12,fillerTop+size+4,100,12);
+				ctx.drawImage(arrowleft,size*12,fillerTop+size*3+4,100,12);
+				ctx.drawImage(zuk,size*12.5,0,80,84)
+			};
 			drawUpdate();
 			document.getElementById("map").addEventListener('mousedown',function(e){
 				var x = e.offsetX;
