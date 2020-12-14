@@ -92,15 +92,21 @@
 
 			function drawUpdate() {
 				ctx.globalAlpha = 1;
+				ctx.fillStyle = "yellow";
+				ctx.fillRect(3*size,fillerTop+size,20,60);
+				ctx.fillRect(9*size,fillerTop+size,20,60);
+				ctx.fillRect(19*size,fillerTop+size,20,60);
+				ctx.fillRect(25*size,fillerTop+size,20,60);
+
 				//ctx.clearRect(0,100,can.width,can.height - 100);
 
-				for (var i=1; i<144; i++) {
-					if (i < 28 || i > 116 || i%29 == 27 || i%29 == 1) {
+				for (var i=0; i<145; i++) {
+					if (i < 29 || i > 115 || i%29 == 27 || i%29 == 1) {
 						ctx.fillStyle = "black";
 						ctx.fillRect(i%29*size, Math.floor(i/29)*size+fillerTop,size,size)
 						ctx.fillStyle = "red";
 						if (selected[0] == i%29 && selected[1] == Math.floor(i/29)) {
-							ctx.fillStyle	= "green";
+							ctx.fillStyle	= "cyan";
 						}
 						ctx.fillRect(i%29*size+1,Math.floor(i/29)*size+1+fillerTop,size-2,size-2)
 
@@ -110,7 +116,7 @@
 			}
 
 			function drawAttack() {
-				ctx.fillStyle = "green";
+				ctx.fillStyle = "cyan";
 				var nextSets = [0,0];
 				var nextPos = convertToNum(selected[0],selected[1]);
 
