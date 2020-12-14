@@ -2,10 +2,21 @@
 
 <html lang="en">
 	<head>
-		This is the inferno sets plugin!
+		<title>Inferno Sets Tool!</title>
+		<style>
+			#map{
+				border:1px solid black;
+				display:inline-block;
+			}
+		</style>
 	</head>
 	<body>
-		<h1>testing</h1>
-		<p>more testing</p>
+		<h1>Inferno Sets Tool!</h1>
+		<label for="minutes">Minutes left:</label>
+		<input type="number" id="minutes" name="minutes">
+		<label for="seconds">Seconds left:</label>
+		<input type="number" id="seconds" name="seconds">
+		<br><br>
+		<canvas id="map" onselectstart="return false" oncontextmenu="return false" width="600" height="200"></canvas>
 	</body>
 </html>
