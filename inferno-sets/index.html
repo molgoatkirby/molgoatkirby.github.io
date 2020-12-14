@@ -61,12 +61,12 @@
 
 			function convertToCoord(x) {
 				while (x < 1) x += 60;
-				x = x%60;
+				if (x > 60) x = x%60;
 				if (x < 28) return [x,0];
 				if (x < 31) return [27,x-27];
 				if (x < 58) return [60-x-2,4];
-				if (x < 61) return [0,61-x];
-				return [28,4].slice(0);
+				if (x < 61) return [1,61-x];
+				return [28,4];
 			}
 
 			function convertToNum(x,y) {
